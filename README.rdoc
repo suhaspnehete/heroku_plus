@@ -1,17 +1,39 @@
-= heroku_plus
+= Overview
 
-Description goes here.
+Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. This enhances the default Heroku capabilities with multi-account support.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+= Features
 
-== Copyright
+Solves the problem with managing multiple Heroku accounts as {originally discuss here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/].
 
-Copyright (c) 2010 aeonscope. See LICENSE for details.
+= License
+
+Copyright (c) 2010 {Brooke Kuhlmann}[http://www.aeonscope.net].
+See the included LICENSE for more info.
+
+= History
+
+See the CHANGELOG file for more info.
+
+= Requirements
+
+1. Mac OS X
+2. Have multiple Heroku[http://heroku.com/] accounts.
+3. Have installed the {Heroku Gem}[http://github.com/heroku/heroku].
+
+= Installation
+
+Type the following from the command line to install:
+
+* *UNIX*: gem install resourcer
+
+= Usage
+
+  -s, --switch ACCOUNT             Switch Heroku credentials and SSH identity to specified account.
+  -a, --account                    Show the current Heroku credentials and SSH identity.
+  -h, --help                       Show this help message.
+  -v, --version                    Show the current version.
+
+= Contact/Feedback/Issues
+
+* {Brooke Kuhlmannn}[http://www.google.com/profiles/114291115422773881390]
