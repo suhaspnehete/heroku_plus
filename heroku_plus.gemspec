@@ -11,17 +11,15 @@ Gem::Specification.new do |s|
   s.authors = ["Brooke Kuhlmann"]
   s.date = %q{2010-08-15}
   s.default_executable = %q{herokup}
-  s.description = %q{}
+  s.description = %q{Enhances default Heroku capabilities with multi-account support.}
   s.email = %q{aeonscope@gmail.com}
   s.executables = ["herokup"]
   s.extra_rdoc_files = [
-    "LICENSE",
-     "LICENSE.rdoc",
+    "LICENSE.rdoc",
      "README.rdoc"
   ]
   s.files = [
     "CHANGELOG.rdoc",
-     "LICENSE",
      "LICENSE.rdoc",
      "README.rdoc",
      "Rakefile",
