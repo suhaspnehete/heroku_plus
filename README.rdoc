@@ -1,26 +1,8 @@
 = Overview
 
-Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. In fact, its not even possible without a lot of manual labor.
-This gem enhances the default Heroku capabilities with multi-account support so you can easily switch between accounts using the command line.
-
-In order to understand how this gem saves you time, you first need to understand how the Heroku gem determines what your accounts settings are (as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/]).
-It does this by looking at your Heroku credentials and your SSH settings. Lets take a closer look.
-
-=== Heroku Credentials (i.e. ~/.heroku/credentials)
-
-This file is usually created for you by the Heroku gem when you setup your first account. It is a text file with your account login (i.e. email address)
-on the first line and your password on the second line. To use multiple accounts, I suggest the following:
-
-* ~/.heroku/credentials - Your current account in play.
-* ~/.heroku/account_1.credentials - Your first account.
-* ~/.heroku/account_2.credentials - Your second account.
-
-When you need to switch accounts simply copy the contents of the account you are switching to over the existing credentials
-file (example: account_2.credentials now becomes credentials). I wrote a couple of simple Ruby scripts to automate this:
-
-= Features
-
-Solves the problem with managing multiple Heroku accounts as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/].
+Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. In fact, its not even possible without a lot of manual labor,
+random scripts, etc. This gem enhances the default Heroku capabilities with multi-account support so you can easily switch between accounts using
+a single command line.
 
 = License
 
@@ -43,12 +25,95 @@ Type the following from the command line to install:
 
 * *UNIX*: gem install heroku_plus
 
+= Setup
+
+In order to understand how this gem benefits you, you first need to understand how the Heroku gem determines what your accounts settings are (as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/]).
+Heroku does this by pulling information from your Heroku credentials and your SSH settings. Lets take a closer look.
+
+=== Heroku Credentials (i.e. ~/.heroku/credentials)
+
+This file is created for you by the Heroku gem when you first setup your account. It is a text file with your account login (i.e. email address)
+on the first line and your password on the second line. Example:
+
+  example@test.com
+	dafkk3$59dkagblk3k5l56
+	
+This file contains the credentials necessary to validate your computer with your Heroku account. In order to manage multiple accounts, I suggest
+the creating the following configuration:
+
+  ~/.heroku/credentials - Your current account.
+  ~/.heroku/account_1.credentials - Your first account.
+  ~/.heroku/account_2.credentials - Your second account.
+
+*NOTE:* It is important that you suffix your accounts with the .credentials extension or this gem will not be able to switch your accounts properly.
+
+=== SSH Identity (i.e. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
+
+The following assumes RSA encryption but feel free to use whatever you like. The information contained here will still apply. You might have already
+created the necessary SSH files when you established your Heroku account, GitHub account, etc. If not, simply execute the following command line:
+
+  ssh-keygen -t rsa -C "<email>" -f ~/.ssh/id_rsa
+
+To support multiple accounts, I suggest the following:
+
+  ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub - Your current identity.
+  ~/.ssh/account_1.identity and ~/.ssh/account_1.identity.pub - Your first account.
+  ~/.ssh/account_2.identity and ~/.ssh/account_2.identity.pub - Your first account.
+
+*NOTE:* It is important that you suffix identities with the .identity extension or this gem will not be able to switch your identities properly.
+
+=== SSH Configuration (i.e. ~/.ssh/config)
+
+This file should consist of or at least contain the following:
+
+  Host official.heroku.com
+  HostName heroku.com
+  User git
+  IdentitiesOnly yes
+
+=== Configuring all Heroku projects to support multiple accounts.
+
+For each account beyond the first, you’ll need to switch to each app directory and type the following command:
+
+  git remote add heroku git@official.heroku.com:<your app>.git.
+
+This will allow you to push and deploy your changes back to the Heroku servers and finalize your setup.
+
+=== Default Configuration
+
+You can change the default settings for this gem by creating the following file:
+
+  ~/.heroku/settings.yml
+
+The contents of the file should look like this (where the default values can be changed to your liking):
+
+  --- 
+  :heroku_credentials: "credentials"
+  :ssh_identity: "id_rsa"
+
 = Usage
+
+From a command line, type: herokup -h
+
+Full usage is displayed below:
 
   -s, --switch ACCOUNT             Switch Heroku credentials and SSH identity to specified account.
   -a, --account                    Show the current Heroku credentials and SSH identity.
   -h, --help                       Show this help message.
   -v, --version                    Show the current version.
+
+= Workflow
+
+Workflow
+
+From this point forward, you can switch between accounts as follows:
+
+1. Change directory to the app you want to work on.
+2. Type: herokup -s <account name>
+3. Make changes to your code.
+4. Type: git commit -a -m “Your comments.”
+5. Type: git push heroku.
+6. Have a beer.
 
 = Contact/Feedback/Issues
 
