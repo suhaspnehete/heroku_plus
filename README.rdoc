@@ -15,9 +15,9 @@ See the CHANGELOG file for more info.
 
 = Requirements
 
-1. Mac OS X
-2. Have multiple Heroku[http://heroku.com/] accounts.
-3. Have installed the {Heroku Gem}[http://github.com/heroku/heroku].
+1. Mac OS X.
+2. Multiple Heroku[http://heroku.com/] accounts.
+3. Installed the {Heroku Gem}[http://github.com/heroku/heroku].
 
 = Installation
 
@@ -57,8 +57,8 @@ created the necessary SSH files when you established your Heroku account, GitHub
 To support multiple accounts, I suggest the following:
 
   ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub - Your current identity.
-  ~/.ssh/account_1.identity and ~/.ssh/account_1.identity.pub - Your first account.
-  ~/.ssh/account_2.identity and ~/.ssh/account_2.identity.pub - Your second account.
+  ~/.ssh/account_1.identity and ~/.ssh/account_1.identity.pub - Your first identity.
+  ~/.ssh/account_2.identity and ~/.ssh/account_2.identity.pub - Your second identity.
 
 *NOTE*: It is important that you suffix identities with the .identity extension or this gem will not be able to switch your identities properly.
 
@@ -103,8 +103,6 @@ Full usage is displayed below:
   -v, --version                    Show the current version.
 
 = Workflow
-
-Workflow
 
 From this point forward, you can switch between accounts as follows:
 
