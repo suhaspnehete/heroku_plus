@@ -1,10 +1,26 @@
 = Overview
 
-Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. This enhances the default Heroku capabilities with multi-account support.
+Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. In fact, its not even possible without a lot of manual labor.
+This gem enhances the default Heroku capabilities with multi-account support so you can easily switch between accounts using the command line.
+
+In order to understand how this gem saves you time, you first need to understand how the Heroku gem determines what your accounts settings are (as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/]).
+It does this by looking at your Heroku credentials and your SSH settings. Lets take a closer look.
+
+=== Heroku Credentials (i.e. ~/.heroku/credentials)
+
+This file is usually created for you by the Heroku gem when you setup your first account. It is a text file with your account login (i.e. email address)
+on the first line and your password on the second line. To use multiple accounts, I suggest the following:
+
+* ~/.heroku/credentials - Your current account in play.
+* ~/.heroku/account_1.credentials - Your first account.
+* ~/.heroku/account_2.credentials - Your second account.
+
+When you need to switch accounts simply copy the contents of the account you are switching to over the existing credentials
+file (example: account_2.credentials now becomes credentials). I wrote a couple of simple Ruby scripts to automate this:
 
 = Features
 
-Solves the problem with managing multiple Heroku accounts as {originally discuss here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/].
+Solves the problem with managing multiple Heroku accounts as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/].
 
 = License
 
@@ -25,7 +41,7 @@ See the CHANGELOG file for more info.
 
 Type the following from the command line to install:
 
-* *UNIX*: gem install resourcer
+* *UNIX*: gem install heroku_plus
 
 = Usage
 
