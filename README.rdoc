@@ -98,6 +98,9 @@ From a command line, type: herokup -h
 Full usage is displayed below:
 
   -s, --switch ACCOUNT             Switch Heroku credentials and SSH identity to specified account.
+  -b, --backup ACCOUNT             Backup existing Heroku credentials and SSH identity to specified account.
+  -d, --destroy ACCOUNT            Destroy Heroku credentials and SSH identity for specified account.
+  -l, --list                       Show all Heroku accounts.
   -i, --info                       Show the current Heroku credentials and SSH identity.
   -h, --help                       Show this help message.
   -v, --version                    Show the current version.

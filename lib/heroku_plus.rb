@@ -44,12 +44,29 @@ class HerokuPlus
       o.banner = "Usage: herokup [options]"
 
       o.on_tail "-s", "--switch ACCOUNT", String, "Switch Heroku credentials and SSH identity to specified account." do |account|
+        puts
         switch_credentials account
         switch_identity account
         print_info
         exit
       end
-    
+
+      o.on_tail "-b", "--backup ACCOUNT", String, "Backup existing Heroku credentials and SSH identity to specified account." do |account|
+        backup_credentials account
+        backup_identity account
+        exit
+      end
+
+      o.on_tail "-d", "--destroy ACCOUNT", String, "Destroy Heroku credentials and SSH identity for specified account." do |account|
+        destroy_credentials account
+        destroy_identity account
+        exit
+      end
+
+      o.on_tail "-l", "--list", "Show all Heroku accounts." do
+        print_accounts and exit
+      end
+
       o.on_tail "-i", "--info", "Show the current Heroku credentials and SSH identity." do
         print_info and exit
       end
@@ -72,14 +89,30 @@ class HerokuPlus
       puts error.message.capitalize
     end
   end
+  
+  # Backup current Heroku credentials to given account.
+  # ==== Parameters
+  # * +account+ - Required. The account name for the backup. Defaults to "unknown".
+  def backup_credentials account = "unknown"
+    puts "\nBacking up current Heroku credentials to \"#{account}\" account..."
+    backup_file File.join(@heroku_home, @heroku_credentials), File.join(@heroku_home, account + '.' + @heroku_credentials)
+  end
+  
+  # Destroy Heroku credentials for given account.
+  # ==== Parameters
+  # * +account+ - Required. The account to destroy. Defaults to "unknown".
+  def destroy_credentials account
+    puts "\nDestroying Heroku credentials for \"#{account}\" account..."
+    destroy_file File.join(@heroku_home, account + '.' + @heroku_credentials)
+  end
 
-  # Switches Heroku credentials to given account.
+  # Switch Heroku credentials to given account.
   # ==== Parameters
   # * +account+ - Required. The account name to switch to. Defaults to "unknown".
   def switch_credentials account = "unknown"
     account_file = File.join @heroku_home, account + '.' + @heroku_credentials
     credentials_file = File.join @heroku_home, @heroku_credentials
-    puts "\nSwitching Heroku credentials to \"#{account}\" account..."
+    puts "Switching Heroku credentials to \"#{account}\" account..."
     if valid_file? account_file
       system "rm -f #{credentials_file}"
       system "ln -s #{account_file} #{credentials_file}"
@@ -88,7 +121,25 @@ class HerokuPlus
     end
   end
   
-  # Switches SSH identity to given account.
+  # Backup current SSH identity to given account.
+  # ==== Parameters
+  # * +account+ - Required. The account name for the backup. Defaults to "unknown".
+  def backup_identity account = "unknown"
+    puts "\nBacking up current SSH identity to \"#{account}\" account..."
+    backup_file File.join(@ssh_home, @ssh_identity), File.join(@ssh_home, account + ".identity")
+    backup_file File.join(@ssh_home, @ssh_identity + ".pub"), File.join(@ssh_home, account + ".identity.pub")
+  end  
+  
+  # Destroy SSH identity for given account.
+  # ==== Parameters
+  # * +account+ - Required. The account to destroy. Defaults to "unknown".
+  def destroy_identity account
+    puts "\nDestroying SSH identity for \"#{account}\" account..."
+    destroy_file File.join(@ssh_home, account + ".identity")
+    destroy_file File.join(@ssh_home, account + ".identity.pub")
+  end  
+  
+  # Switch SSH identity to given account.
   # ==== Parameters
   # * +account+ - Required. The account name to switch to. Defaults to "unknown".
   def switch_identity account = "unknown"
@@ -96,7 +147,7 @@ class HerokuPlus
     old_public_file = File.join @ssh_home, @ssh_identity + ".pub"
     new_private_file = File.join @ssh_home, account + ".identity"
     new_public_file = File.join @ssh_home, account + ".identity.pub"
-    puts "\nSwitching Heroku SSH identity to \"#{account}\" account..."
+    puts "Switching Heroku SSH identity to \"#{account}\" account..."
     if valid_file?(new_private_file) && valid_file?(new_public_file)
       system "rm -f #{old_private_file}"
       system "rm -f #{old_public_file}"
@@ -107,13 +158,21 @@ class HerokuPlus
     end
   end
   
-  # Prints active account information.
+  def print_accounts
+    puts "\n Current Heroku accounts are:"
+    Dir.glob("#{@heroku_home}/*.#{@heroku_credentials}").each do |path|
+      puts " * " + File.basename(path, '.' + @heroku_credentials)
+    end
+    puts
+  end
+  
+  # Print active account information.
   def print_info
     credentials_file = File.join @heroku_home, @heroku_credentials
     ssh_private_file = File.join @ssh_home, @ssh_identity
     ssh_public_file = File.join @ssh_home, @ssh_identity + ".pub"
     if valid_file?(credentials_file) && valid_file?(ssh_private_file) && valid_file?(ssh_public_file)
-      puts "\nInformation for current Heroku \"#{current_heroku_account credentials_file}\" account is:\n\n"
+      puts "\nInformation about current Heroku \"#{current_heroku_account credentials_file}\" account is:\n\n"
       puts "Account:              #{current_heroku_account credentials_file}" 
       puts "Password:             #{'*' * current_heroku_password(credentials_file).size}"
       puts "Source (Heroku):      #{credentials_file}"
@@ -124,31 +183,71 @@ class HerokuPlus
     end
   end
   
-  # Prints version information.
+  # Print version information.
   def print_version
     puts "Heroku Plus " + @version
   end
   
   private
 
-  # Answers whether the file exists or not and prints an error message when not found.
-  # ==== Parameters
-  # * +file+ - Required. The file to validate.
-  def valid_file? file
-    File.exists?(file) ? true : ("ERROR: File does not exist: #{file}." and false)
-  end
-
-  # Answers the current Heroku account name of the given credentials file.
+  # Answer the current Heroku account name of the given credentials file.
   # ==== Parameters
   # * +file+ - Required. The credentials file from which to read the account name from.
   def current_heroku_account file
     open(file, 'r').readlines.first.strip if valid_file?(file)
   end
   
-  # Answers the current Heroku password of the given credentials file.
+  # Answer the current Heroku password of the given credentials file.
   # ==== Parameters
   # * +file+ - Required. The credentials file from which to read the password from.
   def current_heroku_password file
     open(file, 'r').readlines.last.strip if valid_file?(file)
+  end
+  
+  # Answer whether the file exists and print an error message when not found.
+  # ==== Parameters
+  # * +file+ - Required. The file to validate.
+  def valid_file? file
+    File.exists?(file) ? true : ("ERROR: File does not exist: #{file}." and false)
+  end
+
+  # Backup (duplicate) existing file to new file.
+  # ==== Parameters
+  # * +old_file+ - Required. The file to be backed up.
+  # * +new_file+ - Required. The file to backup to.
+  def backup_file old_file, new_file
+    if File.exists? old_file
+      if File.exists? new_file
+        puts "File exists: \"#{new_file}\". Do you wish to replace the existing file (y/n)?"
+        if gets.strip == 'y'
+          system "cp #{old_file} #{new_file}"
+          puts "Replaced: #{new_file}"
+        else
+          puts "Backup aborted."
+        end
+      else
+        system "cp #{old_file} #{new_file}"
+        puts "Created: #{new_file}"
+      end
+    else
+      puts "ERROR: Backup aborted! File does not exist: #{old_file}"
+    end
+  end
+  
+  # Destroy an existing file.
+  # ==== Parameters
+  # * +file+ - Required. The file to destroy.
+  def destroy_file file
+    if valid_file? file
+      puts "You are about to perminently destroy the \"#{file}\" file. Do you wish to continue (y/n)?"
+      if gets.strip == 'y'
+        system "rm -f #{file}"
+        puts "Destroyed: #{file}"
+      else
+        puts "Destroy aborted."
+      end
+    else
+      puts "ERROR: Destroy aborted! File not found: #{file}"
+    end
   end
 end
