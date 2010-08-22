@@ -98,7 +98,7 @@ From a command line, type: herokup -h
 Full usage is displayed below:
 
   -s, --switch ACCOUNT             Switch Heroku credentials and SSH identity to specified account.
-  -a, --account                    Show the current Heroku credentials and SSH identity.
+  -i, --info                       Show the current Heroku credentials and SSH identity.
   -h, --help                       Show this help message.
   -v, --version                    Show the current version.
 

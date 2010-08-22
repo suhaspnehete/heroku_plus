@@ -1,3 +1,12 @@
+= v1.1.0
+
+* Improved error messaging for files that do not exist.
+* Clarified the difference between the error messages displayed when switching SSH identities versus switching Heroku account credentials.
+* Clarified source and README documentation.
+* Renamed the -a option to -i (i.e. info) instead.
+* Added printing of SSH private and public identity paths (to further clarify what is being used) when using the the -i option.
+* Prominently display the current account when displaying all account information via the -i option.
+
 = v1.0.0
 
 * Initial version.
