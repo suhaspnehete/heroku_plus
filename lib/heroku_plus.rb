@@ -36,11 +36,14 @@ class HerokuPlus
 
   # Read and parse the supplied command line arguments.
   def parse_args args = ARGV
+    # Defaults.
+    args = ["-h"] if args.empty?
+
     # Configure.
     parser = OptionParser.new do |o|
       o.banner = "Usage: herokup [options]"
 
-      o.on_tail "-s ", "--switch ACCOUNT", String, "Switch Heroku credentials and SSH identity to specified account." do |account|
+      o.on_tail "-s", "--switch ACCOUNT", String, "Switch Heroku credentials and SSH identity to specified account." do |account|
         switch_credentials account
         switch_identity account
         print_info
