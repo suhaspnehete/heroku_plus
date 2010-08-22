@@ -9,6 +9,7 @@
 * Added the -b option so one can easily backup an existing Heroku credentials and SSH identity.
 * Added the -d option so one can easily destroy an existing Heroku account (i.e. credentials and SSH identity)
 * Added the -l option so one can easily list all existing Heroku accounts.
+* Removed the ability to configure the Heroku credentials file name via the settings.yml since you can't configure this via the Heroku gem anyway.
 
 = v1.0.0
 

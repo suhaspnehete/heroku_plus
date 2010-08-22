@@ -17,7 +17,7 @@ See the CHANGELOG file for more info.
 
 1. Mac OS X.
 2. Multiple Heroku[http://heroku.com/] accounts.
-3. Heroku[http://github.com/heroku/heroku] gem.
+3. Heroku gem[http://github.com/heroku/heroku].
 
 = Installation
 
@@ -45,7 +45,7 @@ the creating the following configuration:
   ~/.heroku/account_1.credentials - Your first account.
   ~/.heroku/account_2.credentials - Your second account.
 
-*NOTE*: It is important that you suffix your accounts with the .credentials extension or this gem will not be able to switch your accounts properly.
+*NOTE*: Account switching will not work properly if all accounts are not suffixed with the .credentials file extension.
 
 === SSH Identity (i.e. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
 
@@ -60,7 +60,7 @@ To support multiple accounts, I suggest the following:
   ~/.ssh/account_1.identity and ~/.ssh/account_1.identity.pub - Your first identity.
   ~/.ssh/account_2.identity and ~/.ssh/account_2.identity.pub - Your second identity.
 
-*NOTE*: It is important that you suffix identities with the .identity extension or this gem will not be able to switch your identities properly.
+*NOTE*: Account switching will not work properly if all accounts are not suffixed with the .identity file extension.
 
 === SSH Configuration (i.e. ~/.ssh/config)
 
@@ -73,11 +73,11 @@ This file should consist of or at least contain the following:
 
 === Mapping Heroku projects to individual accounts.
 
-For each account beyond the first, you’ll need to switch to each app directory and type the following command:
+For each account beyond the first, you’ll need to switch to each Heroku app directory and type the following command:
 
   git remote add heroku git@official.heroku.com:<your app>.git.
 
-This will allow you to push and deploy your changes back to the Heroku servers and finalize your setup.
+This will allow you to push and deploy your changes back to the Heroku servers and finalizes your setup.
 
 === Default Configuration
 
@@ -88,7 +88,6 @@ You can change the default settings for this gem by creating the following file:
 The contents of the file should look like this (where the default values can be changed to your liking):
 
   --- 
-  :heroku_credentials: "credentials"
   :ssh_identity: "id_rsa"
 
 = Usage

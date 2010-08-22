@@ -21,7 +21,6 @@ class HerokuPlus
     # Override defaults with custom settings (if found).
     if File.exists? @settings_file
       settings_file = YAML::load_file @settings_file
-      @heroku_credentials = settings_file[:heroku_credentials]
       @ssh_identity = settings_file[:ssh_identity]
     end
 
