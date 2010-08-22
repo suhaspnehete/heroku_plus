@@ -17,13 +17,13 @@ See the CHANGELOG file for more info.
 
 1. Mac OS X.
 2. Multiple Heroku[http://heroku.com/] accounts.
-3. Installed the {Heroku Gem}[http://github.com/heroku/heroku].
+3. Heroku[http://github.com/heroku/heroku] gem.
 
 = Installation
 
 Type the following from the command line to install:
 
-* *UNIX*: gem install heroku_plus
+  gem install heroku_plus
 
 = Setup
 
