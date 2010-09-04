@@ -4,6 +4,8 @@ Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Herok
 random scripts, etc. This gem enhances the default Heroku capabilities with multi-account support so you can easily switch between accounts using
 a single command line.
 
+Special thanks to Ruby5[http://ruby5.envylabs.com] for mentioning this gem in {Episode 103}[http://ruby5.envylabs.com/episodes/105-episode-103-august-17-2010].
+
 = License
 
 Copyright (c) 2010 {Brooke Kuhlmann}[http://www.aeonscope.net].
