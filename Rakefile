@@ -12,9 +12,9 @@ begin
     gem.homepage = "http://github.com/aeonscope/heroku_plus"
     gem.executables = ["herokup"]
     gem.default_executable = "herokup"
-		gem.required_ruby_version = ">= 1.8.7"
-		gem.add_dependency "heroku", ">= 1.9.0"
-    gem.add_development_dependency "rspec", ">= 1.2.9"
+		gem.required_ruby_version = "~> 1.8.7"
+		gem.add_dependency "heroku", "~> 1.9.0"
+    gem.add_development_dependency "rspec", "~> 1.2.9"
 		gem.rdoc_options << "CHANGELOG.rdoc"
 		gem.files = FileList["[A-Z]*", "{bin,lib,generators,rails_generators,test,spec}/**/*"]
   end
