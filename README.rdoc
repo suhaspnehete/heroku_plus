@@ -1,8 +1,8 @@
 = Overview
 
-Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. In fact, its not even possible without a lot of manual labor,
-random scripts, etc. This gem enhances the default Heroku capabilities with multi-account support so you can easily switch between accounts using
-a single command line.
+Managing multiple Heroku[http://heroku.com/] accounts is not easy with the Heroku gem. In fact, it is not even possible without a lot of manual labor,
+random scripts, etc. This gem enhances default Heroku capabilities with multi-account support so you can easily switch between accounts with a single
+command line command.
 
 Special thanks to Ruby5[http://ruby5.envylabs.com] for mentioning this gem in {Episode 103}[http://ruby5.envylabs.com/episodes/105-episode-103-august-17-2010].
 
@@ -32,56 +32,74 @@ Type the following from the command line to install:
 In order to understand how this gem benefits you, you first need to understand how the Heroku gem determines what your accounts settings are (as {originally discussed here}[http://www.aeonscope.net/2010/02/22/managing-multiple-heroku-accounts/]).
 Heroku does this by pulling information from your Heroku credentials and your SSH settings. Lets take a closer look.
 
+=== Overview
+
+The Heroku gem determines your setup from your Heroku credentials, SSH files, and your project Git config within your project directory. Example:
+
+  ~/.heroku/credentials
+  ~/.ssh/config
+  ~/.ssh/id_rsa
+  ~/.ssh/id_rsa.pub
+  ~/Development/Ruby/your_project/.git/config
+
+This setup works wonderfully if you only own one Heroku account but breaks down considerably with multiple accounts because you have to manually
+maintain multiple credentials, id_rsa, and id_rsa.pub files for each Heroku account you own. Luckily, this gem solves this management headache for you
+but lets make sure we understand the above list in detail so you can learn how this gem helps you. Read on.
+
+=== Heroku Setup
+
+For each of your Heroku apps, change to the root directory of each app, and issue the following command:
+
+  git remote add heroku git@official.heroku.com:<your app>.git.
+
+This will allow you to push and deploy your changes back to the Heroku servers properly.
+
 === Heroku Credentials (i.e. ~/.heroku/credentials)
 
-This file is created for you by the Heroku gem when you first setup your account. It is a text file with your account login (i.e. email address)
-on the first line and your password on the second line. Example:
+You need a credentials files for each Heroku account. This file is created for you by the Heroku gem when you first setup your account and is a text
+file that consists of your login (i.e. email address) and password. Example:
 
   example@test.com
   dafkk3$59dkagblk3k5l56
 	
-This file contains the credentials necessary to validate your computer with your Heroku account. In order to manage multiple accounts, I suggest
-the creating the following configuration:
+This file contains the credentials necessary to validate your machine with your Heroku account. To support multiple accounts, I suggest the following:
 
-  ~/.heroku/credentials - Your current account.
+  ~/.heroku/credentials - The active/current account.
   ~/.heroku/account_1.credentials - Your first account.
   ~/.heroku/account_2.credentials - Your second account.
 
-*NOTE*: Account switching will not work properly if all accounts are not suffixed with the .credentials file extension.
-
-=== SSH Identity (i.e. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
-
-The following assumes RSA encryption but feel free to use whatever you like. The information contained here will still apply. You might have already
-created the necessary SSH files when you established your Heroku account, GitHub account, etc. If not, simply execute the following command line:
-
-  ssh-keygen -t rsa -C "<email>" -f ~/.ssh/id_rsa
-
-To support multiple accounts, I suggest the following:
-
-  ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub - Your current identity.
-  ~/.ssh/account_1.identity and ~/.ssh/account_1.identity.pub - Your first identity.
-  ~/.ssh/account_2.identity and ~/.ssh/account_2.identity.pub - Your second identity.
-
-*NOTE*: Account switching will not work properly if all accounts are not suffixed with the .identity file extension.
+*NOTE*: Account switching will not work properly if accounts are not suffixed with the .credentials file extension.
 
 === SSH Configuration (i.e. ~/.ssh/config)
 
-This file should consist of or at least contain the following:
+The SSH configuration file. This file should consist of or at least contain the following due to the Heroku setup steps mentioned earlier:
 
   Host official.heroku.com
   HostName heroku.com
   User git
   IdentitiesOnly yes
 
-=== Mapping Heroku projects to individual accounts.
+=== SSH Identity (i.e. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
 
-For each account beyond the first, you’ll need to switch to each Heroku app directory and type the following command:
+You need private and public SSH identity files for each Heroku account (it is assumed you are using RSA encryption but any encryption technique
+will work). If these files do not already exist, then here is how to create them:
 
-  git remote add heroku git@official.heroku.com:<your app>.git.
+  ssh-keygen -t rsa -C "<email>" -f ~/.ssh/id_rsa
 
-This will allow you to push and deploy your changes back to the Heroku servers and finalizes your setup.
+To support multiple accounts, I suggest the following:
 
-=== Default Configuration
+  ~/.ssh/id_rsa - The active/current private key.
+  ~/.ssh/id_rsa.pub - The active/current public key.
+
+  ~/.ssh/account_1.identity - Your first private identity.
+  ~/.ssh/account_1.identity.pub - Your first public identity.
+
+  ~/.ssh/account_2.identity - Your second private identity.
+  ~/.ssh/account_2.identity.pub - Your second public identity.
+
+*NOTE*: Account switching will not work properly if all accounts are not suffixed with the .identity file extension.
+
+=== Default Gem Configuration
 
 You can change the default settings for this gem by creating the following file:
 
