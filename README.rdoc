@@ -54,7 +54,7 @@ For each of your Heroku apps, change to the root directory of each app, and issu
 
 This will allow you to push and deploy your changes back to the Heroku servers properly.
 
-=== Heroku Credentials (i.e. ~/.heroku/credentials)
+=== Heroku Credentials (~/.heroku/credentials)
 
 You need a credentials files for each Heroku account. This file is created for you by the Heroku gem when you first setup your account and is a text
 file that consists of your login (i.e. email address) and password. Example:
@@ -70,7 +70,7 @@ This file contains the credentials necessary to validate your machine with your 
 
 *NOTE*: Account switching will not work properly if accounts are not suffixed with the .credentials file extension.
 
-=== SSH Configuration (i.e. ~/.ssh/config)
+=== SSH Configuration (~/.ssh/config)
 
 The SSH configuration file. This file should consist of or at least contain the following due to the Heroku setup steps mentioned earlier:
 
@@ -79,7 +79,7 @@ The SSH configuration file. This file should consist of or at least contain the 
   User git
   IdentitiesOnly yes
 
-=== SSH Identity (i.e. ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
+=== SSH Identity (~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
 
 You need private and public SSH identity files for each Heroku account (it is assumed you are using RSA encryption but any encryption technique
 will work). If these files do not already exist, then here is how to create them:
@@ -98,6 +98,23 @@ To support multiple accounts, I suggest the following:
   ~/.ssh/account_2.identity.pub - Your second public identity.
 
 *NOTE*: Account switching will not work properly if all accounts are not suffixed with the .identity file extension.
+
+=== Project Git Configuration (~/Development/Ruby/your_project/.git/config)
+
+This is somewhat outside the scope of documentation for this gem but I think it is important to mention. The Git configuration file, as you might
+know, is what configures Git for your particular project. If you have more than one branch (i.e. remote) listed within this config file
+you will still need to pass the --app command when pushing your changes back to Heroku. For example, your config file might look like this:
+
+  [remote "example-prod"]
+  [remote "example-dev"]
+
+This would then require you to issue one of the following commands when deploying to Heroku (depending on what branch you have checked out):
+
+  git push heroku master --app example-prod
+  git push heroku master --app example-dev
+
+While this gem alleviates the need to specify the --app command when dealing within multiple Heroku accounts, it does not help you when
+deploying to multiple branches within a single Heroku account. That, I leave to you.
 
 === Default Gem Configuration
 
@@ -132,7 +149,7 @@ From this point forward, you can switch between accounts as follows:
 2. Type: herokup -s <account name>
 3. Make changes to your code.
 4. Type: git commit -a -m “Your comments.”
-5. Type: git push heroku.
+5. Type: git push heroku master.
 6. Have a beer.
 
 = Contact/Feedback/Issues
