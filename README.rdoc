@@ -103,18 +103,18 @@ To support multiple accounts, I suggest the following:
 
 This is somewhat outside the scope of documentation for this gem but I think it is important to mention. The Git configuration file, as you might
 know, is what configures Git for your particular project. If you have more than one branch (i.e. remote) listed within this config file
-you will still need to pass the --app command when pushing your changes back to Heroku. For example, your config file might look like this:
+you will still need to pass the --app command when issuing Heroku commands. For example, your config file might look like this:
 
   [remote "example-prod"]
   [remote "example-dev"]
 
-This would then require you to issue one of the following commands when deploying to Heroku (depending on what branch you have checked out):
+This would then require you use the --app option when issuing a Heroku command. For example:
 
-  git push heroku master --app example-prod
-  git push heroku master --app example-dev
+  heroku restart --app example-prod
+  heroku restart --app example-dev
 
 While this gem alleviates the need to specify the --app command when dealing within multiple Heroku accounts, it does not help you when
-deploying to multiple branches within a single Heroku account. That, I leave to you.
+dealing with multiple branches within a single Heroku account. That, I leave to you.
 
 === Default Gem Configuration
 
